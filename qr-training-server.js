@@ -78,7 +78,12 @@ const server = http.createServer((req, res) => {
     const ua = req.headers['user-agent'] || 'Unknown';
     logScan(ua);
 
-    res.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8' });
+    res.writeHead(200, {
+      'Content-Type': 'text/html; charset=utf-8',
+      'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate',
+      'Pragma': 'no-cache',
+      'Expires': '0'
+    });
     res.end(HTML_PAGE);
   } else {
     // Anything else (favicon.ico etc.) - just 404, don't log
