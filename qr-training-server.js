@@ -231,8 +231,20 @@ function broadcast(payload) {
 }
 
 wss.on('connection', (ws) => {
+  ws.isAlive = true;
+  ws.on('pong', () => { ws.isAlive = true; });
   ws.send(JSON.stringify({ type: 'init', scans }));
 });
+
+// Ping every 25s to keep connections alive through Render's proxy,
+// and drop any that stopped responding.
+setInterval(() => {
+  wss.clients.forEach((ws) => {
+    if (ws.isAlive === false) return ws.terminate();
+    ws.isAlive = false;
+    ws.ping();
+  });
+}, 25000);
 
 server.listen(PORT, '0.0.0.0', () => {
   console.log(`Visitor page: http://<your-ip>:${PORT}`);
