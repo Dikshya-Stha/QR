@@ -100,14 +100,18 @@ const DASHBOARD_PAGE = `<!DOCTYPE html>
       overflow-y: auto;
     }
     .scan-row {
-      display: flex;
-      justify-content: space-between;
       padding: 8px 0;
       border-bottom: 1px solid #334155;
-      font-size: 0.85rem;
+      font-size: 0.8rem;
     }
-    .scan-time { color: #64748b; }
-    .scan-browser { color: #e2e8f0; }
+    .scan-time { color: #64748b; margin-bottom: 2px; }
+    .scan-ua {
+      color: #e2e8f0;
+      word-break: break-all;
+      font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+      font-size: 0.75rem;
+      line-height: 1.4;
+    }
     .total {
       font-size: 2rem;
       font-weight: bold;
@@ -164,7 +168,8 @@ const DASHBOARD_PAGE = `<!DOCTYPE html>
 
       scanListEl.innerHTML = scans.slice().reverse().map(s => {
         const time = new Date(s.time).toLocaleTimeString();
-        return \`<div class="scan-row"><span class="scan-time">\${time}</span><span class="scan-browser">\${parseBrowser(s.userAgent)}</span></div>\`;
+        const ua = (s.userAgent || 'Unknown').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+        return \`<div class="scan-row"><div class="scan-time">\${time} · \${parseBrowser(s.userAgent)}</div><div class="scan-ua">\${ua}</div></div>\`;
       }).join('') || '<div style="color:#64748b;">No scans yet</div>';
     }
 
