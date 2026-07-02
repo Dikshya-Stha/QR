@@ -152,6 +152,29 @@ const DASHBOARD_PAGE = `<!DOCTYPE html>
       return 'Other';
     }
 
+    function parseDevice(ua) {
+      // iPhone / iPad - iOS doesn't expose exact model in the UA
+      if (/iPhone/.test(ua)) {
+        const m = ua.match(/CPU iPhone OS (\\d+_\\d+)/) || ua.match(/OS (\\d+_\\d+)/);
+        return m ? \`iPhone (iOS \${m[1].replace('_', '.')})\` : 'iPhone';
+      }
+      if (/iPad/.test(ua)) return 'iPad';
+
+      // Android - model is usually in the parentheses before "Build/"
+      if (/Android/.test(ua)) {
+        const model = ua.match(/;\\s*([^;)]+?)\\s*Build\\//);
+        const ver = ua.match(/Android (\\d+(\\.\\d+)?)/);
+        const modelStr = model ? model[1].trim() : null;
+        if (modelStr) return \`\${modelStr}\${ver ? ' (Android ' + ver[1] + ')' : ''}\`;
+        return ver ? \`Android \${ver[1]}\` : 'Android';
+      }
+
+      if (/Windows/.test(ua)) return 'Windows PC';
+      if (/Macintosh/.test(ua)) return 'Mac';
+      if (/Linux/.test(ua)) return 'Linux';
+      return 'Unknown device';
+    }
+
     function render(scans) {
       totalEl.textContent = scans.length;
 
@@ -169,7 +192,7 @@ const DASHBOARD_PAGE = `<!DOCTYPE html>
       scanListEl.innerHTML = scans.slice().reverse().map(s => {
         const time = new Date(s.time).toLocaleTimeString();
         const ua = (s.userAgent || 'Unknown').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-        return \`<div class="scan-row"><div class="scan-time">\${time} · \${parseBrowser(s.userAgent)}</div><div class="scan-ua">\${ua}</div></div>\`;
+        return \`<div class="scan-row"><div class="scan-time">\${time} · \${parseBrowser(s.userAgent)} · \${parseDevice(s.userAgent)}</div><div class="scan-ua">\${ua}</div></div>\`;
       }).join('') || '<div style="color:#64748b;">No scans yet</div>';
     }
 
