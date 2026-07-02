@@ -139,10 +139,10 @@ const DASHBOARD_PAGE = `<!DOCTYPE html>
     const scanListEl = document.getElementById('scanList');
 
     function parseBrowser(ua) {
-      if (/Edg\//.test(ua)) return 'Edge';
-      if (/Chrome\//.test(ua) && !/Edg\//.test(ua)) return 'Chrome';
-      if (/Safari\//.test(ua) && !/Chrome\//.test(ua)) return 'Safari';
-      if (/Firefox\//.test(ua)) return 'Firefox';
+      if (/Edg\\//.test(ua)) return 'Edge';
+      if (/Chrome\\//.test(ua) && !/Edg\\//.test(ua)) return 'Chrome';
+      if (/Safari\\//.test(ua) && !/Chrome\\//.test(ua)) return 'Safari';
+      if (/Firefox\\//.test(ua)) return 'Firefox';
       if (/Instagram/.test(ua)) return 'Instagram In-App';
       if (/FBAN|FBAV/.test(ua)) return 'Facebook In-App';
       return 'Other';
