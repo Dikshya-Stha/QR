@@ -1,0 +1,12 @@
+{
+  "name": "qr-security-training",
+  "version": "1.0.0",
+  "description": "QR-based security awareness training landing page",
+  "main": "qr-training-server.js",
+  "scripts": {
+    "start": "node qr-training-server.js"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
