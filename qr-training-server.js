@@ -159,12 +159,12 @@ const DASHBOARD_PAGE = `<!DOCTYPE html>
 
       tallyEl.innerHTML = Object.entries(tally)
         .sort((a, b) => b[1] - a[1])
-        .map(([name, count]) => `<div class="tally-row"><span>${name}</span><span class="tally-count">${count}</span></div>`)
+        .map(([name, count]) => \`<div class="tally-row"><span>\${name}</span><span class="tally-count">\${count}</span></div>\`)
         .join('') || '<div style="color:#64748b;">No scans yet</div>';
 
       scanListEl.innerHTML = scans.slice().reverse().map(s => {
         const time = new Date(s.time).toLocaleTimeString();
-        return `<div class="scan-row"><span class="scan-time">${time}</span><span class="scan-browser">${parseBrowser(s.userAgent)}</span></div>`;
+        return \`<div class="scan-row"><span class="scan-time">\${time}</span><span class="scan-browser">\${parseBrowser(s.userAgent)}</span></div>\`;
       }).join('') || '<div style="color:#64748b;">No scans yet</div>';
     }
 
